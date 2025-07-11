@@ -30,7 +30,7 @@
       padding: 20px;
     }
 
-    /* ✅ VÍDEO DE FUNDO cobrindo 100% da tela real */
+    /* VÍDEO DE FUNDO */
     .video-background,
     .overlay {
       position: fixed;
@@ -52,9 +52,25 @@
       z-index: -1;
     }
 
-    main, header {
-      position: relative;
-      z-index: 1;
+    /* ✅ FADE para suavizar topo e base */
+    .fade-top,
+    .fade-bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .fade-top {
+      top: 0;
+      background: linear-gradient(to bottom, #000 0%, transparent 100%);
+    }
+
+    .fade-bottom {
+      bottom: 0;
+      background: linear-gradient(to top, #000 0%, transparent 100%);
     }
 
     header img {
@@ -269,6 +285,10 @@
   <!-- SOBREPOSIÇÃO ESCURA -->
   <div class="overlay"></div>
 
+  <!-- FADES para suavizar topo e base -->
+  <div class="fade-top"></div>
+  <div class="fade-bottom"></div>
+
   <header>
     <img src="logo-groovy.png" alt="Logo Groovy Haus">
   </header>
@@ -281,7 +301,6 @@
       <button id="botao-gerar" class="animado" onclick="gerarQRCode()">Gerar QR Code Pix</button>
     </div>
 
-    <!-- BOTÃO FIXO DO INSTAGRAM -->
     <div class="instagram-fixo">
       <a href="instagram://user?username=groovy.haus"
          onclick="setTimeout(() => { window.location = 'https://www.instagram.com/groovy.haus/'; }, 500);"
@@ -296,7 +315,6 @@
 
     function gerarQRCode() {
       const botaoGerar = document.getElementById("botao-gerar");
-
       botaoGerar.classList.remove("animado");
 
       const anterior = document.getElementById("resultado");
