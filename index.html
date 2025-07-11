@@ -13,18 +13,66 @@
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
+      height: 100%;
       font-family: 'Inter', sans-serif;
-      background-color: #000;
       color: #fff;
+    }
+
+    body {
+      position: relative;
+      z-index: 1;
       text-align: center;
       padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* VÍDEO DE FUNDO */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: -2;
+    }
+
+    .video-background video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+
+    /* CAMADA ESCURA PARA CONTRASTE */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    main, header {
+      position: relative;
+      z-index: 1;
     }
 
     header img {
       width: 140px;
       max-width: 80%;
       animation: fadeInDown 0.8s ease-out;
+    }
+
+    .conteudo-central {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 70vh;
+      margin-top: 40px;
     }
 
     h1 {
@@ -113,33 +161,22 @@
       z-index: 1000;
     }
 
-    .video-section {
-      margin-top: 40px;
-    }
-
-    .video-section h2 {
-      font-size: 1.2em;
-      margin-bottom: 12px;
-    }
-
-    video {
-      width: 100%;
-      max-width: 360px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    }
-
-    .social {
-      margin-top: 30px;
+    /* Botão Instagram fixo no rodapé (ajustado) */
+    .instagram-fixo {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
     }
 
     .insta-btn {
       display: inline-block;
-      padding: 12px 24px;
+      padding: 8px 18px;
       background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
       color: #fff;
-      border-radius: 30px;
-      font-size: 1em;
+      border-radius: 25px;
+      font-size: 0.9em;
       text-decoration: none;
       transition: transform 0.2s;
       font-weight: 600;
@@ -203,7 +240,7 @@
       }
     }
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 480px) {
       h1 {
         font-size: 1.4em;
       }
@@ -220,36 +257,36 @@
       #resultado img {
         width: 220px;
       }
-
-      .video-section h2 {
-        font-size: 1em;
-      }
     }
   </style>
 </head>
 <body>
+
+  <!-- VÍDEO DE FUNDO -->
+  <div class="video-background">
+    <video autoplay muted loop playsinline>
+      <source src="registro.mp4" type="video/mp4">
+      Seu navegador não suporta vídeo.
+    </video>
+  </div>
+
+  <!-- SOBREPOSIÇÃO ESCURA -->
+  <div class="overlay"></div>
 
   <header>
     <img src="logo-groovy.png" alt="Logo Groovy Haus">
   </header>
 
   <main>
-    <h1>INGRESSOS ARRAIÁ DA GROOVY</h1>
-    <p class="subtexto">Pague direto no Pix, sem taxas.</p>
+    <div class="conteudo-central">
+      <h1>INGRESSOS ARRAIÁ DA GROOVY</h1>
+      <p class="subtexto">Pague direto no Pix, sem taxas.</p>
 
-    <button id="botao-gerar" class="animado" onclick="gerarQRCode()">Gerar QR Code Pix</button>
-
-    <!-- <div id="resultado"></div> -->
-
-    <div class="video-section fade-in">
-      <h2>Registros da última edição:</h2>
-      <video autoplay muted loop playsinline>
-        <source src="registro.mp4" type="video/mp4">
-        Seu navegador não suporta vídeo.
-      </video>
+      <button id="botao-gerar" class="animado" onclick="gerarQRCode()">Gerar QR Code Pix</button>
     </div>
 
-    <div class="social">
+    <!-- BOTÃO FIXO DO INSTAGRAM -->
+    <div class="instagram-fixo">
       <a href="instagram://user?username=groovy.haus"
          onclick="setTimeout(() => { window.location = 'https://www.instagram.com/groovy.haus/'; }, 500);"
          class="insta-btn">
@@ -265,18 +302,15 @@
       const botaoGerar = document.getElementById("botao-gerar");
 
       botaoGerar.classList.remove("animado");
-      // botaoGerar.textContent = "Gerar Novamente";
 
-      // Remove resultado anterior se existir
       const anterior = document.getElementById("resultado");
       if (anterior) anterior.remove();
 
-      // Cria novo container de resultado
       const resultado = document.createElement("div");
       resultado.id = "resultado";
       resultado.innerHTML = '<div class="loading"></div>';
 
-      botaoGerar.insertAdjacentElement('afterend', resultado); // Insere abaixo do botão
+      botaoGerar.insertAdjacentElement('afterend', resultado);
 
       setTimeout(() => {
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payloadPix)}`;
@@ -287,12 +321,9 @@
           </div>
         `;
 
-        // Oculta o botão após gerar
         botaoGerar.style.display = "none";
       }, 1000);
     }
-
-
 
     function copiarPix() {
       const botaoCopiar = document.getElementById("botao-copiar");
