@@ -29,26 +29,39 @@
 
     h1 {
       font-size: 1.6em;
-      margin: 20px 0 30px;
+      margin: 20px 0 10px;
       animation: fadeIn 1s ease-out;
     }
 
+    .subtexto {
+      font-size: 1em;
+      color: #ccc;
+      margin-bottom: 30px;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
     button {
-      padding: 12px 24px;
+      padding: 14px 28px;
       background-color: #fff;
       color: #000;
       border: none;
       border-radius: 30px;
       font-size: 1em;
       cursor: pointer;
-      transition: transform 0.2s, background-color 0.3s;
       margin: 10px auto;
       display: block;
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+      transition: transform 0.2s, background-color 0.3s;
     }
 
     button:hover {
       background-color: #ccc;
-      transform: scale(1.05);
+      transform: scale(1.07);
+    }
+
+    button.animado {
+      animation: vibra 1.8s infinite ease-in-out, glow 2.5s infinite ease-in-out;
     }
 
     #resultado {
@@ -59,10 +72,14 @@
     }
 
     #resultado img {
-      width: 250px;
+      width: 280px;
       max-width: 90%;
       margin-bottom: 20px;
       animation: zoomIn 0.3s ease-in-out;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+      background-color: #fff;
+      padding: 10px;
     }
 
     .loading {
@@ -76,6 +93,66 @@
     }
 
     .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 0.95em;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      animation: fadeInOut 3s ease-in-out forwards;
+      z-index: 1000;
+    }
+
+    .video-section {
+      margin-top: 40px;
+    }
+
+    .video-section h2 {
+      font-size: 1.2em;
+      margin-bottom: 12px;
+    }
+
+    video {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .social {
+      margin-top: 30px;
+    }
+
+    .insta-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+      color: #fff;
+      border-radius: 30px;
+      font-size: 1em;
+      text-decoration: none;
+      transition: transform 0.2s;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .insta-btn:hover {
+      transform: scale(1.05);
+    }
+
+    #confirmacao-pagamento {
+      margin-top: 15px;
+      font-size: 0.95em;
+      color: #ccc;
       animation: fadeIn 0.6s ease-in-out;
     }
 
@@ -99,25 +176,39 @@
       100% { transform: rotate(360deg); }
     }
 
-    .video-section {
-      margin-top: 40px;
+    @keyframes fadeInOut {
+      0%   { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      10%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+      90%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
     }
 
-    .video-section h2 {
-      font-size: 1.2em;
-      margin-bottom: 12px;
+    @keyframes vibra {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-1.5px); }
+      30% { transform: translateX(1.5px); }
+      45% { transform: translateX(-1px); }
+      60% { transform: translateX(1px); }
+      75% { transform: translateX(-0.5px); }
+      90% { transform: translateX(0.5px); }
     }
 
-    video {
-      width: 100%;
-      max-width: 360px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    @keyframes glow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+      }
     }
 
     @media screen and (max-width: 400px) {
       h1 {
         font-size: 1.4em;
+      }
+
+      .subtexto {
+        font-size: 0.95em;
       }
 
       button {
@@ -143,17 +234,26 @@
 
   <main>
     <h1>INGRESSOS ARRAIÁ DA GROOVY</h1>
+    <p class="subtexto">Pague direto no Pix, sem taxas.</p>
 
-    <button id="botao-gerar" onclick="gerarQRCode()">Gerar QR Code Pix</button>
+    <button id="botao-gerar" class="animado" onclick="gerarQRCode()">Gerar QR Code Pix</button>
 
     <div id="resultado"></div>
 
     <div class="video-section fade-in">
-      <h2>Registros da última edição</h2>
+      <h2>Registros da última edição:</h2>
       <video autoplay muted loop playsinline>
         <source src="registro.mp4" type="video/mp4">
         Seu navegador não suporta vídeo.
       </video>
+    </div>
+
+    <div class="social">
+      <a href="instagram://user?username=groovy.haus"
+         onclick="setTimeout(() => { window.location = 'https://www.instagram.com/groovy.haus/'; }, 500);"
+         class="insta-btn">
+        Instagram: @groovy.haus
+      </a>
     </div>
   </main>
 
@@ -163,16 +263,18 @@
     function gerarQRCode() {
       const resultado = document.getElementById("resultado");
       const botaoGerar = document.getElementById("botao-gerar");
+
+      botaoGerar.classList.remove("animado");
       botaoGerar.textContent = "Gerar Novamente";
 
       resultado.innerHTML = '<div class="loading"></div>';
 
       setTimeout(() => {
-        const qrUrl = `https://chart.googleapis.com/chart?chs=400x400&cht=qr&chl=${encodeURIComponent(payloadPix)}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payloadPix)}`;
         resultado.innerHTML = `
           <div class="fade-in">
             <img src="${qrUrl}" alt="QR Code Pix">
-            <button id="botao-copiar" onclick="copiarPix()">Copiar código Pix</button>
+            <button id="botao-copiar" class="animado" onclick="copiarPix()">Copiar código Pix</button>
           </div>
         `;
       }, 1000);
@@ -180,11 +282,33 @@
 
     function copiarPix() {
       const botaoCopiar = document.getElementById("botao-copiar");
+
       navigator.clipboard.writeText(payloadPix).then(() => {
         botaoCopiar.textContent = "Copiado com sucesso!";
-      }).catch(err => {
-        alert("Erro ao copiar o código.");
+        botaoCopiar.classList.remove("animado");
+
+        const resultado = document.getElementById("resultado");
+        const mensagem = document.createElement("p");
+        mensagem.id = "confirmacao-pagamento";
+        mensagem.textContent = "Após o pagamento, envie o comprovante via WhatsApp ou Instagram Direct.";
+
+        const antiga = document.getElementById("confirmacao-pagamento");
+        if (antiga) antiga.remove();
+
+        resultado.appendChild(mensagem);
+
+        mostrarNotificacao("Código Pix copiado com sucesso!");
+      }).catch(() => {
+        mostrarNotificacao("Erro ao copiar o código.");
       });
+    }
+
+    function mostrarNotificacao(msg) {
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
     }
   </script>
 
