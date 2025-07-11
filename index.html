@@ -15,7 +15,7 @@
       box-sizing: border-box;
     }
 
-    html {
+    html, body {
       height: 100%;
       background-color: #000;
     }
@@ -26,7 +26,6 @@
       position: relative;
       text-align: center;
       overflow-x: hidden;
-      min-height: 100vh;
       padding: 20px;
     }
 
@@ -73,7 +72,7 @@
 
     header img {
       margin-top: 40px;
-      width: 160px;
+      width: 140px;
       max-width: 80%;
       animation: fadeInDown 0.8s ease-out;
     }
@@ -174,24 +173,26 @@
     }
 
     .instagram-fixo {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 10;
-}
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+    }
 
-.insta-btn {
-  width: 48px;
-  height: 48px;
-  display: block;
-}
+    .insta-btn {
+      display: block;
+      width: 48px;
+      height: 48px;
+    }
 
-.insta-btn svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  fill: white;
-}
+    .insta-btn img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      filter: brightness(0) invert(1); /* branco */
+    }
+
     #confirmacao-pagamento {
       margin-top: 15px;
       font-size: 0.95em;
@@ -292,12 +293,10 @@
 
     <div class="instagram-fixo">
       <a href="instagram://user?username=groovy.haus"
-   onclick="setTimeout(() => { window.location = 'https://www.instagram.com/groovy.haus/'; }, 500);"
-   class="insta-btn" aria-label="Instagram da Groovy">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="48" height="48" fill="white">
-    <path d="M224,202.66A53.34,53.34,0,1,0,277.34,256,53.38,53.38,0,0,0,224,202.66Zm124.71-41a54,54,0,1,0,54,54A54,54,0,0,0,348.71,161.71ZM224,292.05A36.05,36.05,0,1,1,260.05,256,36.09,36.09,0,0,1,224,292.05Zm89.6,59.69a36,36,0,1,1-36-36A36,36,0,0,1,313.6,351.74ZM128,176a54,54,0,1,0,54,54A54,54,0,0,0,128,176Zm61.6,175.74a36,36,0,1,1-36-36A36,36,0,0,1,189.6,351.74ZM224,8C100.3,8,0,108.3,0,232S100.3,456,224,456,448,355.7,448,232,347.7,8,224,8Zm0,392c-88.22,0-160-71.78-160-160S135.78,80,224,80s160,71.78,160,160S312.22,400,224,400Z"/>
-  </svg>
-</a>
+         onclick="setTimeout(() => { window.location = 'https://www.instagram.com/groovy.haus/'; }, 500);"
+         class="insta-btn" aria-label="Instagram da Groovy">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram branco">
+      </a>
     </div>
   </main>
 
