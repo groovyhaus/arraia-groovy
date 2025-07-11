@@ -237,13 +237,13 @@
 </head>
 <body>
 
-<!-- Fundo com vídeo -->
-<div class="video-background">
-  <video autoplay muted loop playsinline preload="auto" playsInline>
-    <source src="registro.mp4" type="video/mp4">
-    Seu navegador não suporta vídeo.
-  </video>
-</div>
+  <!-- Fundo com vídeo -->
+  <div class="video-background">
+    <video autoplay muted loop playsInline preload="auto" id="bg-video">
+      <source src="registro.mp4" type="video/mp4">
+      Seu navegador não suporta vídeo.
+    </video>
+  </div>
 
   <div class="overlay"></div>
   <div class="fade-top"></div>
@@ -329,6 +329,21 @@
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 4000);
     }
+
+    // Força autoplay em navegadores que bloqueiam por padrão
+    window.addEventListener('DOMContentLoaded', () => {
+      const video = document.getElementById('bg-video');
+      if (video) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            setTimeout(() => {
+              video.play().catch(() => {});
+            }, 1000);
+          });
+        }
+      }
+    });
   </script>
 
 </body>
