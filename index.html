@@ -17,7 +17,6 @@
 
     html, body {
       height: 100%;
-      background-color: #000;
     }
 
     body {
@@ -27,6 +26,7 @@
       overflow-x: hidden;
       position: relative;
       padding: 20px;
+      background: transparent; /* ✅ isso aqui corrige o fundo preto */
     }
 
     .video-background,
@@ -46,7 +46,7 @@
     }
 
     .overlay {
-      background-color: transparent; /* Corrigido: remover fundo preto opaco */
+      background-color: transparent;
       z-index: -1;
     }
 
@@ -237,6 +237,7 @@
 </head>
 <body>
 
+  <!-- Fundo com vídeo -->
   <div class="video-background">
     <video autoplay muted loop playsinline preload="auto" id="bg-video">
       <source src="registro.mp4" type="video/mp4">
@@ -329,7 +330,6 @@
       setTimeout(() => toast.remove(), 4000);
     }
 
-    // Força autoplay em alguns navegadores
     window.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('bg-video');
       if (video) {
