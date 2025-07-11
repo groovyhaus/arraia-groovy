@@ -23,9 +23,9 @@
     body {
       font-family: 'Inter', sans-serif;
       color: #fff;
-      position: relative;
       text-align: center;
       overflow-x: hidden;
+      position: relative;
       padding: 20px;
     }
 
@@ -151,10 +151,6 @@
       animation: spin 1s linear infinite;
     }
 
-    .fade-in {
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
     .toast {
       position: fixed;
       bottom: 30px;
@@ -190,14 +186,6 @@
       height: 100%;
       display: block;
       object-fit: contain;
-      filter: brightness(0) invert(1); /* branco */
-    }
-
-    #confirmacao-pagamento {
-      margin-top: 15px;
-      font-size: 0.95em;
-      color: #ccc;
-      animation: fadeIn 0.6s ease-in-out;
     }
 
     @keyframes fadeIn {
@@ -245,29 +233,11 @@
         box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
       }
     }
-
-    @media screen and (max-width: 480px) {
-      h1 {
-        font-size: 1.4em;
-      }
-
-      .subtexto {
-        font-size: 0.95em;
-      }
-
-      button {
-        font-size: 0.95em;
-        padding: 10px 20px;
-      }
-
-      #resultado img {
-        width: 220px;
-      }
-    }
   </style>
 </head>
 <body>
 
+  <!-- Fundo com vídeo -->
   <div class="video-background">
     <video autoplay muted loop playsinline>
       <source src="registro.mp4" type="video/mp4">
@@ -291,11 +261,12 @@
       <button id="botao-gerar" class="animado" onclick="gerarQRCode()">Gerar QR Code Pix</button>
     </div>
 
+    <!-- Ícone Instagram branco -->
     <div class="instagram-fixo">
       <a href="instagram://user?username=groovy.haus"
          onclick="setTimeout(() => { window.location = 'https://www.instagram.com/groovy.haus/'; }, 500);"
          class="insta-btn" aria-label="Instagram da Groovy">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram branco">
+        <img src="instagram-icon-white.png" alt="Instagram branco">
       </a>
     </div>
   </main>
