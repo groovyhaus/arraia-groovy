@@ -9,15 +9,8 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -26,11 +19,10 @@
       overflow-x: hidden;
       position: relative;
       padding: 20px;
-      background: transparent; /* ✅ isso aqui corrige o fundo preto */
+      background: transparent;
     }
 
-    .video-background,
-    .overlay {
+    .video-background, .overlay {
       position: fixed;
       inset: 0;
       width: 100%;
@@ -50,8 +42,7 @@
       z-index: -1;
     }
 
-    .fade-top,
-    .fade-bottom {
+    .fade-top, .fade-bottom {
       position: fixed;
       left: 0;
       right: 0;
@@ -141,6 +132,13 @@
       padding: 10px;
     }
 
+    #confirmacao-pagamento {
+      margin-top: 20px;
+      margin-bottom: 80px;
+      max-width: 90%;
+      line-height: 1.4;
+    }
+
     .loading {
       border: 5px solid #444;
       border-top: 5px solid #fff;
@@ -188,33 +186,34 @@
       object-fit: contain;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .mute-button {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 0.8em;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .mute-button:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
 
-    @keyframes zoomIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     @keyframes fadeInOut {
-      0%   { opacity: 0; transform: translateX(-50%) translateY(10px); }
-      10%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-      90%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+      0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
       100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
     }
-
     @keyframes vibra {
       0%, 100% { transform: translateX(0); }
       15% { transform: translateX(-1.5px); }
@@ -224,14 +223,9 @@
       75% { transform: translateX(-0.5px); }
       90% { transform: translateX(0.5px); }
     }
-
     @keyframes glow {
-      0%, 100% {
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-      }
-      50% {
-        box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
-      }
+      0%, 100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+      50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.7); }
     }
   </style>
 </head>
@@ -241,7 +235,6 @@
   <div class="video-background">
     <video autoplay muted loop playsinline preload="auto" id="bg-video">
       <source src="registro.mp4" type="video/mp4">
-      Seu navegador não suporta vídeo.
     </video>
   </div>
 
@@ -257,7 +250,6 @@
     <div class="conteudo-central">
       <h1>INGRESSOS ARRAIÁ DA GROOVY</h1>
       <p class="subtexto">Pague direto no Pix, sem taxas.</p>
-
       <button id="botao-gerar" class="animado" onclick="gerarQRCode()">Gerar QR Code Pix</button>
     </div>
 
@@ -268,7 +260,11 @@
         <img src="instagram-icon-white.png" alt="Instagram branco">
       </a>
     </div>
+
+    <button id="muteButton" class="mute-button" onclick="toggleMute()">🔈 Som</button>
   </main>
+
+  <audio id="musica-ambiente" src="musica-fundo.mp4" preload="auto"></audio>
 
   <script>
     const payloadPix = "00020126870014br.gov.bcb.pix0136eff0ee4a-0f78-476c-922d-642f117421480225Ingresso Arraia da Groovy5204000053039865802BR5923Gilvany Rodrigues Ortiz6008Brasilia62230519daqr338661008643520630424F6";
@@ -283,8 +279,20 @@
       const resultado = document.createElement("div");
       resultado.id = "resultado";
       resultado.innerHTML = '<div class="loading"></div>';
-
       botaoGerar.insertAdjacentElement('afterend', resultado);
+
+      const musica = document.getElementById("musica-ambiente");
+      const muteBtn = document.getElementById("muteButton");
+
+      musica.volume = 0.15;
+      musica.muted = false;
+      musica.load(); // necessário em alguns navegadores
+
+      musica.play().then(() => {
+        muteBtn.style.display = 'block';
+      }).catch((err) => {
+        console.log("Erro ao tocar música:", err);
+      });
 
       setTimeout(() => {
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payloadPix)}`;
@@ -294,7 +302,6 @@
             <button id="botao-copiar" class="animado" onclick="copiarPix()">Copiar código Pix</button>
           </div>
         `;
-
         botaoGerar.style.display = "none";
       }, 1000);
     }
@@ -307,13 +314,12 @@
         botaoCopiar.classList.remove("animado");
 
         const resultado = document.getElementById("resultado");
-        const mensagem = document.createElement("p");
-        mensagem.id = "confirmacao-pagamento";
-        mensagem.textContent = "Após o pagamento, envie o comprovante via WhatsApp ou Instagram Direct.";
-
         const antiga = document.getElementById("confirmacao-pagamento");
         if (antiga) antiga.remove();
 
+        const mensagem = document.createElement("p");
+        mensagem.id = "confirmacao-pagamento";
+        mensagem.textContent = "Após o pagamento, envie o comprovante via WhatsApp ou Instagram Direct.";
         resultado.appendChild(mensagem);
 
         mostrarNotificacao("Código Pix copiado com sucesso!<br>Agora abra seu app do banco e faça o pagamento.");
@@ -330,19 +336,17 @@
       setTimeout(() => toast.remove(), 4000);
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const video = document.getElementById('bg-video');
-      if (video) {
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {
-            setTimeout(() => {
-              video.play().catch(() => {});
-            }, 1000);
-          });
-        }
+    function toggleMute() {
+      const musica = document.getElementById("musica-ambiente");
+      const btn = document.getElementById("muteButton");
+      if (musica.muted) {
+        musica.muted = false;
+        btn.textContent = "🔈 Som";
+      } else {
+        musica.muted = true;
+        btn.textContent = "🔇 Mudo";
       }
-    });
+    }
   </script>
 
 </body>
