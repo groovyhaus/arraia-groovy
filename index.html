@@ -134,7 +134,7 @@
 
     #confirmacao-pagamento {
       margin-top: 20px;
-      margin-bottom: 160px; /* aumento para evitar sobreposição no Instagram */
+      margin-bottom: 200px; /* margem maior para não colar no botão Instagram */
       max-width: 90%;
       line-height: 1.4;
       padding: 0 10px;
@@ -249,7 +249,7 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       video.muted = true;
-      video.volume = 0.03; // som bem ambiente
+      video.volume = 0.03; // som ambiente
       video.play();
     });
 
@@ -266,7 +266,7 @@
       botaoGerar.insertAdjacentElement('afterend', resultado);
 
       video.muted = false;
-      video.volume = 0.03; // som bem leve ao ativar
+      video.volume = 0.03;
       video.play().catch(err => {
         console.warn("Erro ao ativar som:", err);
       });
