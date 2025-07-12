@@ -133,17 +133,18 @@
     }
 
     #confirmacao-pagamento {
-  margin-top: 20px;
-  margin-bottom: 100px;
-  max-width: 90%;
-  line-height: 1.4;
-  padding: 0 10px;
-}
-@media (max-width: 480px) {
-  #confirmacao-pagamento {
-    margin-bottom: 130px;
-  }
-}
+      margin-top: 20px;
+      margin-bottom: 100px;
+      max-width: 90%;
+      line-height: 1.4;
+      padding: 0 10px;
+    }
+
+    @media (max-width: 480px) {
+      #confirmacao-pagamento {
+        margin-bottom: 130px;
+      }
+    }
 
     .loading {
       border: 5px solid #444;
@@ -192,26 +193,6 @@
       object-fit: contain;
     }
 
-    .mute-button {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 10;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      padding: 8px 14px;
-      font-size: 0.8em;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .mute-button:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -237,9 +218,8 @@
 </head>
 <body>
 
-  <!-- Fundo com vídeo -->
   <div class="video-background">
-    <video autoplay muted loop playsinline preload="auto" id="bg-video">
+    <video autoplay loop playsinline preload="auto" muted id="bg-video">
       <source src="registro.mp4" type="video/mp4">
     </video>
   </div>
@@ -267,13 +247,17 @@
       </a>
     </div>
 
-    <button id="muteButton" class="mute-button" onclick="toggleMute()">🔈 Som</button>
   </main>
-
-  <audio id="musica-ambiente" src="musica-fundo.mp4" preload="auto"></audio>
 
   <script>
     const payloadPix = "00020126870014br.gov.bcb.pix0136eff0ee4a-0f78-476c-922d-642f117421480225Ingresso Arraia da Groovy5204000053039865802BR5923Gilvany Rodrigues Ortiz6008Brasilia62230519daqr338661008643520630424F6";
+    const video = document.getElementById("bg-video");
+
+    window.addEventListener("DOMContentLoaded", () => {
+      video.muted = true;
+      video.volume = 0.1;
+      video.play();
+    });
 
     function gerarQRCode() {
       const botaoGerar = document.getElementById("botao-gerar");
@@ -287,17 +271,10 @@
       resultado.innerHTML = '<div class="loading"></div>';
       botaoGerar.insertAdjacentElement('afterend', resultado);
 
-      const musica = document.getElementById("musica-ambiente");
-      const muteBtn = document.getElementById("muteButton");
-
-      musica.volume = 0.15;
-      musica.muted = false;
-      musica.load(); // necessário em alguns navegadores
-
-      musica.play().then(() => {
-        muteBtn.style.display = 'block';
-      }).catch((err) => {
-        console.log("Erro ao tocar música:", err);
+      video.muted = false;
+      video.volume = 0.1;
+      video.play().catch(err => {
+        console.warn("Erro ao ativar som:", err);
       });
 
       setTimeout(() => {
@@ -341,19 +318,6 @@
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 4000);
     }
-
-    function toggleMute() {
-      const musica = document.getElementById("musica-ambiente");
-      const btn = document.getElementById("muteButton");
-      if (musica.muted) {
-        musica.muted = false;
-        btn.textContent = "🔈 Som";
-      } else {
-        musica.muted = true;
-        btn.textContent = "🔇 Mudo";
-      }
-    }
   </script>
-
 </body>
 </html>
