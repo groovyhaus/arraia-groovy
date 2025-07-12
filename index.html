@@ -134,16 +134,10 @@
 
     #confirmacao-pagamento {
       margin-top: 20px;
-      margin-bottom: 100px;
+      margin-bottom: 160px; /* aumento para evitar sobreposição no Instagram */
       max-width: 90%;
       line-height: 1.4;
       padding: 0 10px;
-    }
-
-    @media (max-width: 480px) {
-      #confirmacao-pagamento {
-        margin-bottom: 130px;
-      }
     }
 
     .loading {
@@ -255,7 +249,7 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       video.muted = true;
-      video.volume = 0.1;
+      video.volume = 0.03; // som bem ambiente
       video.play();
     });
 
@@ -272,7 +266,7 @@
       botaoGerar.insertAdjacentElement('afterend', resultado);
 
       video.muted = false;
-      video.volume = 0.1;
+      video.volume = 0.03; // som bem leve ao ativar
       video.play().catch(err => {
         console.warn("Erro ao ativar som:", err);
       });
