@@ -19,7 +19,7 @@
       overflow-x: hidden;
       position: relative;
       padding: 20px;
-      background: transparent;
+      background: #000;
     }
 
     @media (max-width: 600px) {
@@ -34,6 +34,10 @@
       width: 100%;
       height: 100%;
       z-index: -2;
+    }
+
+    .video-background {
+      background: url('fallback.png') center center / cover no-repeat;
     }
 
     .video-background video {
@@ -218,9 +222,8 @@
 </head>
 <body>
 
-  <div class="video-background">
-    <!-- ✅ Corrigido: autoplay + muted + playsinline garantem autoplay em iOS e Android -->
-    <video autoplay loop playsinline preload="auto" muted id="bg-video">
+  <div class="video-background" style="background: url('fallback.png') center center / cover no-repeat;">
+    <video autoplay muted loop playsinline preload="metadata" id="bg-video">
       <source src="registro.mp4" type="video/mp4">
     </video>
   </div>
@@ -253,7 +256,12 @@
     const payloadPix = "00020126870014br.gov.bcb.pix0136eff0ee4a-0f78-476c-922d-642f117421480225Ingresso Arraia da Groovy5204000053039865802BR5923Gilvany Rodrigues Ortiz6008Brasilia62230519daqr338661008643520630424F6";
     const video = document.getElementById("bg-video");
 
-    // ❌ REMOVIDO: video.muted/play em DOMContentLoaded (não necessário e atrapalha iOS)
+    // Força autoplay após carregamento suficiente
+    video.addEventListener("canplaythrough", () => {
+      video.play().catch(() => {
+        console.warn("Autoplay bloqueado. Safari?");
+      });
+    });
 
     function gerarQRCode() {
       const botaoGerar = document.getElementById("botao-gerar");
@@ -267,7 +275,6 @@
       resultado.innerHTML = '<div class="loading"></div>';
       botaoGerar.insertAdjacentElement('afterend', resultado);
 
-      // ✅ Só aqui liberamos o som (após interação)
       video.muted = false;
       video.volume = 0.03;
       video.play().catch(err => {
