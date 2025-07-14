@@ -37,7 +37,10 @@
     }
 
     .video-background {
-      background: url('fallback.png') center center / cover no-repeat;
+      background-image: url('fallback.png');
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
 
     .video-background video {
@@ -222,7 +225,7 @@
 </head>
 <body>
 
-  <div class="video-background" style="background: url('fallback.png') center center / cover no-repeat;">
+  <div class="video-background">
     <video autoplay muted loop playsinline preload="metadata" id="bg-video">
       <source src="registro.mp4" type="video/mp4">
     </video>
@@ -256,10 +259,16 @@
     const payloadPix = "00020126870014br.gov.bcb.pix0136eff0ee4a-0f78-476c-922d-642f117421480225Ingresso Arraia da Groovy5204000053039865802BR5923Gilvany Rodrigues Ortiz6008Brasilia62230519daqr338661008643520630424F6";
     const video = document.getElementById("bg-video");
 
-    // Força autoplay após carregamento suficiente
+    // Tenta iniciar o vídeo ao carregar
+    document.addEventListener("DOMContentLoaded", () => {
+      video.play().catch(err => {
+        console.warn("Autoplay bloqueado (provável Safari)", err);
+      });
+    });
+
     video.addEventListener("canplaythrough", () => {
-      video.play().catch(() => {
-        console.warn("Autoplay bloqueado. Safari?");
+      video.play().catch(err => {
+        console.warn("Autoplay bloqueado em canplaythrough", err);
       });
     });
 
